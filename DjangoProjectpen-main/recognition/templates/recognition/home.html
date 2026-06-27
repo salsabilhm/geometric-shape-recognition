@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Geometric Shape Recognition</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #111;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        h1 { font-size: 2.5em; margin-bottom: 10px; color: #3b82f6; }
+        .subtitle { color: #aaa; margin-bottom: 50px; line-height: 1.5; }
+        .cards { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 50px; }
+        .card { background: #1a1a1a; border: 1px solid #333; padding: 30px; width: 200px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .card h3 { margin: 0; color: #3b82f6; }
+        .card p { font-size: 0.95em; color: #ccc; margin: 0; text-align: center; }
+
+        .triangle { width:0; height:0; border-left:40px solid transparent; border-right:40px solid transparent; border-bottom:70px solid #3b82f6; }
+        .square { width:70px; height:70px; background-color:#3b82f6; }
+        .circle { width:70px; height:70px; background-color:#3b82f6; border-radius:50%; }
+
+        h2 { margin-bottom: 20px; color: #3b82f6; }
+        .upload-section { margin-bottom: 50px; }
+        .upload-buttons { display:flex; justify-content:center; gap:15px; margin-bottom:15px; }
+        button { background-color:#3b82f6; border:none; padding:10px 20px; border-radius:5px; color:#fff; cursor:pointer; font-size:1em; }
+        button:hover { background-color:#2563eb; }
+        input[type="file"] { display:none; }
+
+        .upload-box {
+            border: 2px dashed #555;
+            padding: 30px;
+            border-radius: 10px;
+            color: #888;
+            min-height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .upload-box img, .upload-box video { max-width:100%; max-height:150px; border-radius:8px; }
+        #result { margin-top: 20px; color: #1597fa; font-weight: bold; }
+        footer { margin-top:50px; font-size:0.8em; color:#555; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Geometric Shape Recognition</h1>
+    <p class="subtitle">
+        An intelligent system designed for students to identify and analyze
+        geometric shapes. Upload or capture drawings to detect triangles,
+        squares, and circles.
+    </p>
+
+    <h2>Reference Shapes</h2>
+    <div class="cards">
+        <div class="card"><div class="triangle"></div><h3>Triangle</h3><p>3 equal sides, 3 angles</p></div>
+        <div class="card"><div class="square"></div><h3>rectangle</h3><p>4 equal sides, 4 right angles</p></div>
+        <div class="card"><div class="circle"></div><h3>Circle</h3><p>Round, no corners or edges</p></div>
+    </div>
+
+    <h2>Upload or Capture Your Drawing</h2>
+
+    <div class="upload-section">
+        <div class="upload-buttons">
+            <button id="captureBtn">Capture with Camera</button>
+            <button id="uploadBtn">⬆ Upload Image</button>
+        </div>
+
+        <input type="file" id="imageInput" accept="image/*">
+        <div class="upload-box" id="uploadBox">△ □ ○<br>Capture or upload an image of your drawing to analyze</div>
+        <p id="result">Result will appear here</p>
+    </div>
+
+</div>
+
+<footer>Geometric Shape Recognition System · Educational Tool for Students</footer>
+
+<script>
+    const imageInput = document.getElementById("imageInput");
+    const uploadBox = document.getElementById("uploadBox");
+    const result = document.getElementById("result");
+    const captureBtn = document.getElementById("captureBtn");
+    const uploadBtn = document.getElementById("uploadBtn");
+
+    // ===== helper function to send image to backend =====
+    async function sendToServer(file) {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const response = await fetch('/recognition/predict/', {
+             method: 'POST',
+              body: formData
+              });
+
+            const data = await response.json();
+            if(data.shape){
+                result.textContent = "Detected Shape: " + data.shape;
+            } else {
+                result.textContent = "Error: " + (data.error || "Unknown error");
+            }
+        } catch(err){
+            result.textContent = "Error connecting to server";
+            console.error(err);
+        }
+    }
+
+    // ===== Upload Image from PC =====
+    uploadBtn.addEventListener("click", () => { imageInput.click(); });
+    imageInput.addEventListener("change", () => {
+        if(imageInput.files.length > 0){
+            const file = imageInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e){
+                uploadBox.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            }
+            reader.readAsDataURL(file);
+            // Send to server
+            sendToServer(file);
+        }
+    });
+
+    // ===== Capture Image from Camera =====
+    captureBtn.addEventListener("click", async () => {
+        const video = document.createElement("video");
+        video.autoplay = true;
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            uploadBox.innerHTML = "";
+            uploadBox.appendChild(video);
+
+            const snapBtn = document.createElement("button");
+            snapBtn.textContent = "📸 Capture Photo";
+            snapBtn.style.marginTop = "10px";
+            uploadBox.appendChild(snapBtn);
+
+            snapBtn.addEventListener("click", () => {
+                const canvas = document.createElement("canvas");
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext("2d").drawImage(video, 0, 0);
+                const imgData = canvas.toDataURL("image/png");
+
+                // Show captured image
+                uploadBox.innerHTML = `<img src="${imgData}" alt="Captured Image">`;
+
+                // Convert base64 to file
+                function dataURLtoFile(dataurl, filename) {
+                    const arr = dataurl.split(',');
+                    const mime = arr[0].match(/:(.*?);/)[1];
+                    const bstr = atob(arr[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    while(n--){ u8arr[n] = bstr.charCodeAt(n); }
+                    return new File([u8arr], filename, {type:mime});
+                }
+
+                const file = dataURLtoFile(imgData, 'capture.png');
+                sendToServer(file);
+
+                // Stop camera
+                stream.getTracks().forEach(track => track.stop());
+            });
+
+        } catch (err) {
+            alert("Cannot access camera. Please check permissions.");
+        }
+    });
+
+</script>
+
+</body>
+</html>

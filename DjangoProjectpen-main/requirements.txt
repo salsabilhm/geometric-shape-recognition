@@ -1,0 +1,8 @@
+django>=6.0
+tensorflow>=2.10
+lightgbm
+scikit-learn
+opencv-python
+numpy
+pillow
+joblib
