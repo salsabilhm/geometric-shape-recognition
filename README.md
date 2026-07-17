@@ -50,15 +50,7 @@ Each image belongs to one of three geometric shapes and one of three quality lev
 
 ## Dataset Source
 
-Kaggle Dataset
 
-(Add your Kaggle dataset link here)
-
-Example
-
-https://www.kaggle.com/your_dataset
-
----
 
 ## Data Preprocessing
 
