@@ -6,7 +6,7 @@ The project combines a CNN trained from scratch as a feature extractor with a Li
 
 ---
 
-# 🎯 Project Features
+#  Project Features
 
 The application allows users to upload an image containing a hand-drawn geometric shape.
 
@@ -17,7 +17,7 @@ The AI model automatically predicts:
   - Circle
   - Rectangle
 
-- ✏️ Drawing Quality
+-  Drawing Quality
   - Perfect
   - Medium
   - Bad / Irregular
@@ -26,7 +26,7 @@ The prediction is displayed instantly through an interactive web interface.
 
 ---
 
-# 📂 Dataset
+#  Dataset
 
 ## Dataset Overview
 
@@ -88,7 +88,7 @@ The augmented images were combined with the original dataset to obtain a balance
 
 ---
 
-# 🧠 Proposed AI Model
+#  Proposed AI Model
 
 The proposed system follows a hybrid Deep Learning + Machine Learning architecture.
 
@@ -145,7 +145,7 @@ The combination of CNN Feature Extraction and LightGBM produced the best overall
 
 ---
 
-# 🧪 Experimental Comparison
+#  Experimental Comparison
 
 Several AI models were evaluated.
 
@@ -162,7 +162,7 @@ The experimental results demonstrate that CNN Feature Extraction combined with L
 
 ---
 
-# 📊 Model Performance
+#  Model Performance
 
 The final model achieved excellent performance across all evaluation metrics.
 
@@ -177,7 +177,7 @@ The high values across all evaluation metrics indicate that the model generalize
 
 ---
 
-# 📈 Evaluation Metrics
+#  Evaluation Metrics
 
 The repository includes several evaluation figures:
 
@@ -189,7 +189,7 @@ The repository includes several evaluation figures:
 
 ---
 
-# 🔍 Explainable AI (Grad-CAM)
+#  Explainable AI (Grad-CAM)
 
 To improve model interpretability, Grad-CAM visualization was applied.
 
@@ -224,7 +224,7 @@ Backend:
 
 ---
 
-# 🛠 Technologies Used
+#  Technologies Used
 
 - Python
 - Django
@@ -236,65 +236,8 @@ Backend:
 - Matplotlib
 - Jupyter Notebook
 
----
 
-# 🚀 Installation
-
-```bash
-git clone https://github.com/salsabilhm/geometric-shape-recognition.git
-
-cd geometric-shape-recognition
-
-pip install -r requirements.txt
-
-python manage.py runserver
-```
-
-Open your browser:
-
-```
-http://127.0.0.1:8000/recognition/
-```
-
----
-
-# 📁 Project Structure
-
-```
-geometric-shape-recognition/
-
-│
-├── DjangoProject1/
-│
-├── recognition/
-│   ├── ai_model.py
-│   ├── models_ai/
-│   ├── templates/
-│   ├── static/
-│   └── views.py
-│
-├── notebooks/
-│   └── model_training.ipynb
-│
-├── metrics/
-│   ├── accuracy_curve.png
-│   ├── loss_curve.png
-│   ├── confusion_matrix.png
-│   ├── classification_report.png
-│   └── grad_cam.png
-│
-├── screenshots/
-│
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── .env.example
-└── manage.py
-```
-
----
-
-# 📌 Future Improvements
+#  Future Improvements
 
 Future versions of this project may include:
 
@@ -305,9 +248,9 @@ Future versions of this project may include:
 - ONNX / TensorFlow Lite optimization
 - Advanced Explainable AI techniques
 
----
 
-# 👨‍💻 Author
+
+#  Author
 
 **Salsabil Hm**
 
