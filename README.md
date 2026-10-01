@@ -250,10 +250,12 @@ Future versions of this project may include:
 
 
 
-#  Author
+# Author
 
-**Salsabil Hm**
+**Hamdane Salsabil & Benaissa Roumeissa**
 
 Master 1 – SDIA
 
 2025 / 2026
+
+**Team Project**
